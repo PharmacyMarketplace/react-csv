@@ -1,6 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   entry: [
@@ -12,25 +12,40 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-
-    // Needed to direct the sample to the local version of the datepicker, this is not needed for
-    // normal setup.
+    extensions: ['.js', '.jsx'],
     alias: {
       'react-csv': path.resolve('./src/index.js')
     }
   },
   module: {
-    loaders: [
-      { test: /\.js/, loader: 'babel', exclude: /node_modules/ },
-      { test: /\.scss/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader') },
-      { test: /\.css/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') }
+    rules: [
+      {
+        test: /\.js/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.scss/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.css/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      }
     ]
   },
   node: { Buffer: false },
   plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new ExtractTextPlugin('style.css', { allChunks: true }),
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
