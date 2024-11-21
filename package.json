@@ -81,6 +81,7 @@
   "overrides": {
     "vue-template-compiler": "3.0.0",
     "json5": "^1.0.2",
-    "markdown-to-jsx": "^7.7.0"
+    "markdown-to-jsx": "^7.7.0",
+	"tough-cookie": "^4.1.3"
   }
 }
